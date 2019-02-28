@@ -1,9 +1,10 @@
 import React from 'react';
+import FriendsList from './FriendsList';
 import axios from 'axios';
 
 class Friends extends React.Component {
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = { 
             friends: [],
             error: ''
@@ -25,11 +26,26 @@ class Friends extends React.Component {
               });
      }
 
+     addFriend = (e, item) => {
+         axios
+            .post('http://localhost:5000/friends', item)
+            .then( res => {
+                console.log(res);
+                this.setState({
+                    friends: res.data
+                });
+                this.props.history.push()
+            })
+            .catch( err => {
+                console.log(err)
+            })
+     }
+
 
     render() { 
         return ( 
             <div>
-                Test
+                <FriendsList name={this.state.friends} key={this.state.friends.id} addFriend={this.addFriend}/>
             </div>
          );
     }
